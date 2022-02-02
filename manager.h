@@ -8,7 +8,7 @@
 #include<stdlib.h>
 #include<iostream>
 
-class Manager {
+class Manager_2player {
     int width, height;
     int score1, score2;
     char up1, down1, up2, down2;
@@ -17,7 +17,7 @@ class Manager {
     Bat *p1, *p2;
 
 public: 
-    Manager (int w=60, int h=20) {
+    Manager_2player (int w=60, int h=20) {
         srand(time(NULL));
         quit = false;
         up1 = 'w', down1 = 's';
@@ -163,17 +163,26 @@ public:
         int player2x = p2->getX();
         int player2y = p2->getY();
 
-        // left paddle
-        for (int i=0 ; i<4 ; i++)
-            if ( ballx == player1x + 1 ) 
-                if (bally == player1y + i)
-                    ball->changeDir((eDir)(rand() % 3 + 4));
+        // left paddle        
+        if ( ballx == player1x + 1 ) {
+            if (bally == player1y or bally == player1y+3)
+                // UPRIGHT, DOWNRIGHT
+                ball->changeDir((eDir)(rand() % 2 + 5));
+            else if (bally == player1y+1 or bally == player1y+2)
+                // RIGHT, UPRIGHT, DOWNRIGHT
+                ball->changeDir((eDir)(rand() % 3 + 4));
+        }
 
-        // right paddle
-        for (int i=0 ; i<4 ; i++)
-            if ( ballx == player2x - 1 ) 
-                if (bally == player2y + i)
-                    ball->changeDir((eDir)(rand() % 3 + 1));
+        // right paddle        
+        if ( ballx == player2x - 1 ) {
+            if (bally == player2y or bally == player2y+3)
+                // UPLEFT, DOWNLEFT
+                ball->changeDir((eDir)(rand() % 2 + 2));
+            else if (bally == player2y+1 or bally == player2y+2)
+                // LEFT, UPLEFT, DOWNLEFT
+                ball->changeDir((eDir)(rand() % 3 + 1));
+        }
+            
 
         // bottom wall
         if ( bally >= height-1 )
@@ -203,7 +212,7 @@ public:
         
     }
 
-    ~Manager() {
+    ~Manager_2player() {
         delete ball, p1, p2;
     }
 };
@@ -403,17 +412,24 @@ public:
         int player2by = p2b->getY();
 
         // left paddles
-        for (int i=0 ; i<4 ; i++)
-            if ( (ballx == player1ax + 1) or (ballx == player1bx + 1) ) 
-                if ((bally == player1ay + i) or (bally == player1by + i))
-                    ball->changeDir((eDir)(rand() % 3 + 4));
-
+        if ( (ballx == player1ax + 1) or (ballx == player1bx + 1) )  {
+            if ((bally == player1ay) or (bally == player1by + 3))
+                // UPRIGHT, DOWNRIGHT
+                ball->changeDir((eDir)(rand() % 2 + 5));
+            else if ((bally == player1ay + 1) or (bally == player1by + 2))
+                // UPRIGHT, DOWNRIGHT, RIGHT
+                ball->changeDir((eDir)(rand() % 3 + 4));
+        }
+            
         // right paddles
-        for (int i=0 ; i<4 ; i++)
-            if ( (ballx == player2ax - 1) or (ballx == player2bx - 1) ) 
-                if ((bally == player2ay + i) or (bally == player2by + i))
-                    ball->changeDir((eDir)(rand() % 3 + 1));
-
+        if ( (ballx == player2ax - 1) or (ballx == player2bx - 1) ) {
+            if ((bally == player2ay) or (bally == player2by + 3))
+                ball->changeDir((eDir)(rand() % 2 + 2));
+            else if ((bally == player2ay + 1) or (bally == player2by + 2))
+                ball->changeDir((eDir)(rand() % 3 + 1));
+        }
+            
+        
         // bottom wall
         if ( bally >= height-1 )
             ball->changeDir(ball->getDir() == DOWNRIGHT ? UPRIGHT : UPLEFT );
@@ -645,17 +661,25 @@ public:
         int player2x = p2->getX();
         int player2y = p2->getY();
 
-        // left paddle
-        for (int i=0 ; i<4 ; i++)
-            if ( ballx == player1x + 1 ) 
-                if (bally == player1y + i)
-                    ball->changeDir((eDir)(rand() % 3 + 4));
+        // left paddle        
+        if ( ballx == player1x + 1 ) {
+            if (bally == player1y or bally == player1y+3)
+                // UPRIGHT, DOWNRIGHT
+                ball->changeDir((eDir)(rand() % 2 + 5));
+            else if (bally == player1y+1 or bally == player1y+2)
+                // RIGHT, UPRIGHT, DOWNRIGHT
+                ball->changeDir((eDir)(rand() % 3 + 4));
+        }
 
-        // right paddle
-        for (int i=0 ; i<4 ; i++)
-            if ( ballx == player2x - 1 ) 
-                if (bally == player2y + i)
-                    ball->changeDir((eDir)(rand() % 3 + 1));
+        // right paddle        
+        if ( ballx == player2x - 1 ) {
+            if (bally == player2y or bally == player2y+3)
+                // UPLEFT, DOWNLEFT
+                ball->changeDir((eDir)(rand() % 2 + 2));
+            else if (bally == player2y+1 or bally == player2y+2)
+                // LEFT, UPLEFT, DOWNLEFT
+                ball->changeDir((eDir)(rand() % 3 + 1));
+        }
 
         // bottom wall
         if ( bally >= height-1 )
