@@ -447,4 +447,248 @@ public:
     }
 };
 
+//____________________________________________________________________________________________
+
+class Manager_1Player {
+    int width, height;
+    int score1, score2, difficulty;
+    char up1, down1;
+    bool quit;
+    Ball *ball;
+    Bat *p1, *p2;
+
+public: 
+    Manager_1Player ( int diff = 1, int w=60, int h=20 ) {
+        srand(time(NULL));
+        quit = false;
+        up1 = 'w', down1 = 's';
+        score1 = score2 = 0;
+        width = w, height = h;
+        difficulty = diff;
+
+        ball = new Ball (w/2, h/2);
+        p1 = new Bat (1, h/2-3);
+        p2 = new Bat (w-2, h/2-3);
+    }  
+
+    void scoreUp (Bat *player) {
+        if (player == p1) 
+            score1 ++;
+        else if (player == p2)
+            score2 ++;
+
+        ball->reset();
+        p1->reset();
+        p2->reset();
+    }
+
+    void draw () {
+        system("clear");
+
+        if ( score1 >= 10 ) {
+            std::cout << "You won\n";
+            return;
+        }
+
+        if ( score2 >= 10 ) {
+            std::cout << "Computer won \n";
+            return;
+        }
+
+        for (int i=0 ; i<width; i++)
+            std::cout << "\u2592";
+        std::cout << "\n";
+
+        for (int i=0 ; i<height ; i++) {
+            for (int j=0 ; j<width ; j++) {
+
+                int ballx = ball->getX();
+                int bally = ball->getY();
+                int player1x = p1->getX();
+                int player1y = p1->getY();
+                int player2x = p2->getX();
+                int player2y = p2->getY();
+
+                if ( j==0 or j==width-1 )
+                    std::cout << "\u2592";
+                    
+                else if ( ballx == j and bally == i )
+                    std::cout << "0";    // ball
+                else if ( player1x == j and player1y == i )
+                    std::cout << "\u2589";    // you
+                else if ( player1x == j and player1y+1 == i )
+                    std::cout << "\u2589";    // you
+                else if ( player1x == j and player1y+2 == i )
+                    std::cout << "\u2589";    // you
+                else if ( player1x == j and player1y+3 == i )
+                    std::cout << "\u2589";    // you
+                    
+                else if ( player2x == j and player2y == i ) {
+                    std::cout << "\u2589";    // computer
+                }
+                else if ( player2x == j and player2y+1 == i ) {
+                    std::cout << "\u2589";    // computer
+                }
+                else if ( player2x == j and player2y+2 == i ) {
+                    std::cout << "\u2589";    // computer
+                }
+                else if ( player2x == j and player2y+3 == i ) {
+                    std::cout << "\u2589";    // computer
+                }
+                else if ( j == width/2 ) {
+                    std::cout << "|";
+                }
+                else 
+                    std::cout << " ";
+            }
+            std::cout << "\n";
+        }
+
+        for (int i=0 ; i<width ; i++)
+            std::cout << "\u2592";
+        std::cout << "\n";
+
+        for (int i=0 ; i<width ; i++)
+            if ( i==width/2-2 ) {
+                std::cout << score1 << " - " << score2 << "\n";
+                break;
+            }         
+            else std::cout << " ";   
+            
+        std::cout << "Controls: 'w' - UP | 's' - DOWN\n";
+    }
+
+    void input () {
+        ball->move();
+
+        int ballx = ball->getX();
+        int bally = ball->getY();
+        int player1x = p1->getX();
+        int player1y = p1->getY();
+        int player2x = p2->getX();
+        int player2y = p2->getY();
+
+        if ( kbhit() ) {
+            char curr = getch();
+
+            if ( curr == up1 ) 
+                if ( player1y > 0 )
+                    p1->moveUp();
+            
+            if ( curr == down1 ) 
+                if ( player1y + 4 < height )
+                    p1->moveDown();
+            
+            if ( ball->getDir() == STOP )
+                ball->ranDir();
+
+            if ( curr == 'q' )
+                quit = true;
+        }
+
+        // move the 2nd bat
+        if ( difficulty == 2 ) {
+            if ( ball->getDir() == RIGHT) {
+                int diff = bally - player2y;
+                // if ( 0 <= diff and diff <= 3 );
+                if ( 3 < diff and (player2y+4 < height)) 
+                    p2->moveDown();
+                else if ( diff < 0 and player2y > 0 )
+                    p2->moveUp();
+            }
+            else {
+                if ( bally < player2y and player2y > 0 )
+                    p2->moveUp();
+                else if ( bally > player2y and player2y+4 < height )
+                    p2->moveDown();
+            }
+        }
+        else if ( difficulty == 1 ) {
+            if ( ball->getDir() == RIGHT) {
+                int diff = bally - player2y;
+                // if ( 0 <= diff and diff <= 3 );
+                if ( 3 < diff and (player2y+4 < height)) 
+                    p2->moveDown();
+                else if ( diff < 0 and player2y > 0 )
+                    p2->moveUp();
+            }
+            else {
+                if ( bally < player2y+2 and player2y > 0 )
+                    p2->moveUp();
+                else if ( bally > player2y+4 and player2y+4 < height )
+                    p2->moveDown();
+            }
+        }
+        else {
+            if ( ball->getDir() == RIGHT) {
+                int diff = bally - player2y;
+                // if ( 0 <= diff and diff <= 3 );
+                if ( 3 < diff and (player2y+4 < height)) 
+                    p2->moveDown();
+                else if ( diff < 0 and player2y > 0 )
+                    p2->moveUp();
+            }
+            else {
+                if ( bally < player2y+4 and player2y > 0 )
+                    p2->moveUp();
+                else if ( bally > player2y+5 and player2y+4 < height )
+                    p2->moveDown();
+            }
+        }
+    }
+
+    void logic () {
+        int ballx = ball->getX();
+        int bally = ball->getY();
+        int player1x = p1->getX();
+        int player1y = p1->getY();
+        int player2x = p2->getX();
+        int player2y = p2->getY();
+
+        // left paddle
+        for (int i=0 ; i<4 ; i++)
+            if ( ballx == player1x + 1 ) 
+                if (bally == player1y + i)
+                    ball->changeDir((eDir)(rand() % 3 + 4));
+
+        // right paddle
+        for (int i=0 ; i<4 ; i++)
+            if ( ballx == player2x - 1 ) 
+                if (bally == player2y + i)
+                    ball->changeDir((eDir)(rand() % 3 + 1));
+
+        // bottom wall
+        if ( bally >= height-1 )
+            ball->changeDir(ball->getDir() == DOWNRIGHT ? UPRIGHT : UPLEFT );
+
+        // top wall
+        if ( bally <= 0 )
+            ball->changeDir((ball->getDir() == UPRIGHT) ? DOWNRIGHT : DOWNLEFT );
+
+        // right wall 
+        if ( ballx == width-1 ) 
+            scoreUp(p1);
+
+        // left wall
+        if ( ballx == 0 ) 
+            scoreUp(p2);
+    }
+
+    void run () {
+        while (!quit)
+        {
+            draw();
+            input();
+            logic();
+            usleep(80000);  // 80000x10^(-6) sec
+        }
+        
+    }
+
+    ~Manager_1Player() {
+        delete ball, p1, p2;
+    }
+};
+
+
 #endif
