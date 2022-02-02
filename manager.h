@@ -72,7 +72,7 @@ public:
                     std::cout << "\u2592";
                     
                 else if ( ballx == j and bally == i )
-                    std::cout << "0";    // ball
+                    std::cout << "\u25C9";    // ball
                 else if ( player1x == j and player1y == i )
                     std::cout << "\u2589";    // player 1
                 else if ( player1x == j and player1y+1 == i )
@@ -95,7 +95,7 @@ public:
                     std::cout << "\u2589";    // player 2
                 }
                 else if ( j == width/2 ) {
-                    std::cout << "|";
+                    std::cout << "\u2502";
                 }
                 else 
                     std::cout << " ";
@@ -293,7 +293,7 @@ public:
                     std::cout << "\u2592";
                     
                 else if ( ballx == j and bally == i )
-                    std::cout << "0";    // ball
+                    std::cout << "\u25C9";    // ball
                 else if ( (player1ax == j and player1ay == i) or 
                             (player1bx == j and player1by == i) )
                     std::cout << "\u2589";    // team 1
@@ -321,7 +321,7 @@ public:
                     std::cout << "\u2589";    // team 2
                 
                 else if ( j == width/2 ) {
-                    std::cout << "|";
+                    std::cout << "\u2502";
                 }
                 else 
                     std::cout << " ";
@@ -457,7 +457,7 @@ public:
         }
         
     }
-
+    
     ~Manager_4player() {
         delete ball, p1a, p1b, p2a, p2b;
     }
@@ -529,7 +529,7 @@ public:
                     std::cout << "\u2592";
                     
                 else if ( ballx == j and bally == i )
-                    std::cout << "0";    // ball
+                    std::cout << "\u25C9";    // ball
                 else if ( player1x == j and player1y == i )
                     std::cout << "\u2589";    // you
                 else if ( player1x == j and player1y+1 == i )
@@ -552,7 +552,7 @@ public:
                     std::cout << "\u2589";    // computer
                 }
                 else if ( j == width/2 ) {
-                    std::cout << "|";
+                    std::cout << "\u2502";
                 }
                 else 
                     std::cout << " ";

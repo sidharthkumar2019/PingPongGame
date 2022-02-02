@@ -8,7 +8,7 @@ int main () {
     int mode;   cin >> mode;
 
     if ( mode == 1 ) {
-        Manager_1Player g;
+        Manager_2player g;
         g.run();
     }
     else if ( mode == 2 ) {
