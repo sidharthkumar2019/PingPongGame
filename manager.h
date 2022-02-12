@@ -1,8 +1,7 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#include "bat.h"
-#include "ball.h"
+#include "object.h"
 #include<conio.h>
 #include<time.h>
 #include<stdlib.h>
@@ -12,7 +11,7 @@ class Manager {
 protected:
     int width, height;
     int score1, score2;
-    Ball *ball;
+    Object *ball;
     bool quit;
 
 public:
@@ -31,7 +30,7 @@ public:
 
 class Manager_2player: public Manager {
     char up1, down1, up2, down2;
-    Bat *p1, *p2;
+    Object *p1, *p2;
 
 public: 
     Manager_2player (int w=60, int h=20) {
@@ -43,7 +42,7 @@ public:
         p2 = new Bat (w-2, h/2-3);
     }  
 
-    void scoreUp (Bat *player) {
+    void scoreUp (Object *player) {
         if (player == p1) 
             score1 ++;
         else if (player == p2)
@@ -234,7 +233,7 @@ public:
 
 class Manager_4player: public Manager {
     char up1a, down1a, up1b, down1b, up2a, down2a, up2b, down2b;
-    Bat *p1a, *p1b, *p2a, *p2b;
+    Object *p1a, *p1b, *p2a, *p2b;
 
 public: 
     Manager_4player (int w=60, int h=20) {
@@ -251,7 +250,7 @@ public:
         p2b = new Bat (w-2, h/2-3 + 6);
     }  
 
-    void scoreUp (Bat *player) {
+    void scoreUp (Object *player) {
         if (player == p1a or player == p1b) 
             score1 ++;
         else if (player == p2a or player == p2b)
@@ -419,19 +418,23 @@ public:
 
         // left bats
         if ( (ballx == player1ax + 1) or (ballx == player1bx + 1) )  {
-            if ((bally == player1ay) or (bally == player1by + 3))
+            if ((bally == player1ay) or (bally == player1ay+3) or
+                (bally == player1by) or (bally == player1by+3))
                 // UPRIGHT, DOWNRIGHT
                 ball->changeDir((eDir)(rand() % 2 + 5));
-            else if ((bally == player1ay + 1) or (bally == player1by + 2))
+            else if ((bally == player1ay + 1) or (bally == player1ay + 2)
+                    or (bally == player1by + 1) or (bally == player1by + 2))
                 // UPRIGHT, DOWNRIGHT, RIGHT
                 ball->changeDir((eDir)(rand() % 3 + 4));
         }
             
         // right bats
         if ( (ballx == player2ax - 1) or (ballx == player2bx - 1) ) {
-            if ((bally == player2ay) or (bally == player2by + 3))
+            if ((bally == player2ay) or (bally == player2ay + 3)
+                or (bally == player2by) or (bally == player2by + 3))
                 ball->changeDir((eDir)(rand() % 2 + 2));
-            else if ((bally == player2ay + 1) or (bally == player2by + 2))
+            else if ((bally == player2ay + 1) or (bally == player2ay + 2)
+                    or (bally == player2by + 1) or (bally == player2by + 2))
                 ball->changeDir((eDir)(rand() % 3 + 1));
         }
             
@@ -474,7 +477,7 @@ public:
 class Manager_1Player: public Manager {
     int difficulty;
     char up1, down1;
-    Bat *p1, *p2;
+    Object *p1, *p2;
 
 public: 
     Manager_1Player ( int diff = 1, int w=60, int h=20 ) {
@@ -487,7 +490,7 @@ public:
         p2 = new Bat (w-2, h/2-3);
     }  
 
-    void scoreUp (Bat *player) {
+    void scoreUp (Object *player) {
         if (player == p1) 
             score1 ++;
         else if (player == p2)
