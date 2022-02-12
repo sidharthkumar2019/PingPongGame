@@ -23,3 +23,10 @@ int main () {
     }
     return 0;
 }
+
+/*
+concepts:
+    1. classes
+    2. abstraction
+    3. inline function
+*/

@@ -8,24 +8,37 @@
 #include<stdlib.h>
 #include<iostream>
 
-class Manager_2player {
+class Manager {
+protected:
     int width, height;
     int score1, score2;
-    char up1, down1, up2, down2;
-    bool quit;
     Ball *ball;
-    Bat *p1, *p2;
+    bool quit;
 
-public: 
-    Manager_2player (int w=60, int h=20) {
-        srand(time(NULL));
+public:
+    Manager(int w=60, int h=20) {
         quit = false;
-        up1 = 'w', down1 = 's';
-        up2 = 'i', down2 = 'k';
         score1 = score2 = 0;
         width = w, height = h;
 
         ball = new Ball (w/2, h/2);
+    }
+
+    ~Manager() {
+        delete ball;
+    }
+};
+
+class Manager_2player: public Manager {
+    char up1, down1, up2, down2;
+    Bat *p1, *p2;
+
+public: 
+    Manager_2player (int w=60, int h=20) {
+        Manager(w, h);
+        up1 = 'w', down1 = 's';
+        up2 = 'i', down2 = 'k';
+        
         p1 = new Bat (1, h/2-3);
         p2 = new Bat (w-2, h/2-3);
     }  
@@ -163,7 +176,7 @@ public:
         int player2x = p2->getX();
         int player2y = p2->getY();
 
-        // left paddle        
+        // left bat        ball,
         if ( ballx == player1x + 1 ) {
             if (bally == player1y or bally == player1y+3)
                 // UPRIGHT, DOWNRIGHT
@@ -173,7 +186,7 @@ public:
                 ball->changeDir((eDir)(rand() % 3 + 4));
         }
 
-        // right paddle        
+        // right bat        
         if ( ballx == player2x - 1 ) {
             if (bally == player2y or bally == player2y+3)
                 // UPLEFT, DOWNLEFT
@@ -207,38 +220,31 @@ public:
             draw();
             input();
             logic();
-            usleep(80000);
+            usleep(80000); // similar to sleep() but takes input in micro sec
         }
         
     }
 
     ~Manager_2player() {
-        delete ball, p1, p2;
+        delete p1, p2;
     }
 };
 // _________________________________________________________________________________________
 
 
-class Manager_4player {
-    int width, height;
-    int score1, score2;
+class Manager_4player: public Manager {
     char up1a, down1a, up1b, down1b, up2a, down2a, up2b, down2b;
-    bool quit;
-    Ball *ball;
     Bat *p1a, *p1b, *p2a, *p2b;
 
 public: 
     Manager_4player (int w=60, int h=20) {
-        srand(time(NULL));
-        quit = false;
+        
+        Manager(w, h);
         up1a = 'w', down1a = 's';
         up1b = 'f', down1b = 'v';
         up2a = 'i', down2a = 'k';
         up2b = 'j', down2b = 'n';
-        score1 = score2 = 0;
-        width = w, height = h;
-
-        ball = new Ball (w/2, h/2);
+        
         p1a = new Bat (1, h/2-3);
         p1b = new Bat (1, h/2-3 + 6);
         p2a = new Bat (w-2, h/2-3);
@@ -411,7 +417,7 @@ public:
         int player2bx = p2b->getX();
         int player2by = p2b->getY();
 
-        // left paddles
+        // left bats
         if ( (ballx == player1ax + 1) or (ballx == player1bx + 1) )  {
             if ((bally == player1ay) or (bally == player1by + 3))
                 // UPRIGHT, DOWNRIGHT
@@ -421,7 +427,7 @@ public:
                 ball->changeDir((eDir)(rand() % 3 + 4));
         }
             
-        // right paddles
+        // right bats
         if ( (ballx == player2ax - 1) or (ballx == player2bx - 1) ) {
             if ((bally == player2ay) or (bally == player2by + 3))
                 ball->changeDir((eDir)(rand() % 2 + 2));
@@ -459,30 +465,24 @@ public:
     }
     
     ~Manager_4player() {
-        delete ball, p1a, p1b, p2a, p2b;
+        delete p1a, p1b, p2a, p2b;
     }
 };
 
 //____________________________________________________________________________________________
 
-class Manager_1Player {
-    int width, height;
-    int score1, score2, difficulty;
+class Manager_1Player: public Manager {
+    int difficulty;
     char up1, down1;
-    bool quit;
-    Ball *ball;
     Bat *p1, *p2;
 
 public: 
     Manager_1Player ( int diff = 1, int w=60, int h=20 ) {
-        srand(time(NULL));
-        quit = false;
+        
+        Manager(w,h);
         up1 = 'w', down1 = 's';
-        score1 = score2 = 0;
-        width = w, height = h;
         difficulty = diff;
 
-        ball = new Ball (w/2, h/2);
         p1 = new Bat (1, h/2-3);
         p2 = new Bat (w-2, h/2-3);
     }  
@@ -661,7 +661,7 @@ public:
         int player2x = p2->getX();
         int player2y = p2->getY();
 
-        // left paddle        
+        // left bat        
         if ( ballx == player1x + 1 ) {
             if (bally == player1y or bally == player1y+3)
                 // UPRIGHT, DOWNRIGHT
@@ -671,7 +671,7 @@ public:
                 ball->changeDir((eDir)(rand() % 3 + 4));
         }
 
-        // right paddle        
+        // right bat        
         if ( ballx == player2x - 1 ) {
             if (bally == player2y or bally == player2y+3)
                 // UPLEFT, DOWNLEFT
@@ -710,7 +710,7 @@ public:
     }
 
     ~Manager_1Player() {
-        delete ball, p1, p2;
+        delete p1, p2;
     }
 };
 

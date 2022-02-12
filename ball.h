@@ -37,7 +37,6 @@ class Ball {
         switch (direction)
         {
             case STOP:
-                /* code */
                 break;
             
             case LEFT:
